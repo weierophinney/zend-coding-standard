@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<ruleset name="ZendCodingStandard">
+    <description>Zend Framework Coding Standard</description>
+
+    <!-- include md extensions for license checking -->
+    <arg name="extensions" value="php,md"/>
+    <!-- show progress and colors -->
+    <arg value="p"/>
+    <arg name="colors"/>
+
+    <!-- inherit rules from: -->
+    <rule ref="PSR2"/>
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+    <rule ref="Generic.Formatting.SpaceAfterNot"/>
+    <rule ref="Squiz.WhiteSpace.OperatorSpacing">
+        <properties>
+            <property name="ignoreNewlines" value="true"/>
+        </properties>
+    </rule>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace">
+        <properties>
+            <property name="ignoreBlankLines" value="false"/>
+        </properties>
+    </rule>
+
+    <!-- ignore NoCodeFound warning for the md files -->
+    <rule ref="Internal.NoCodeFound">
+        <exclude-pattern>*.md</exclude-pattern>
+    </rule>
+
+    <!-- ZendCodingStandard rules -->
+    <rule ref="ZendCodingStandard.Files.Copyright">
+        <include-pattern>*.md</include-pattern>
+    </rule>
+    <rule ref="ZendCodingStandard.Files.License">
+        <include-pattern>*.md</include-pattern>
+    </rule>
+    <rule ref="ZendCodingStandard.Commenting.FileLevelDocBlock"/>
+</ruleset>

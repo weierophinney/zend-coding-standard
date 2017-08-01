@@ -1,11 +1,11 @@
-Zend Framework Coding Standard
-==============================
+# Zend Framework Coding Standard
+
+[![Build Status](https://secure.travis-ci.org/zendframework/zend-coding-standard.svg?branch=master)](https://secure.travis-ci.org/zendframework/zend-coding-standard)
+[![Coverage Status](https://coveralls.io/repos/zendframework/zend-coding-standard/badge.svg?branch=master)](https://coveralls.io/r/zendframework/zend-coding-standard?branch=master)
 
 Repository with all coding standard ruleset for Zend Framework repositories.
 
-
-Installation
-------------
+## Installation
 
 1. Install the module via composer by running:
 
@@ -39,9 +39,7 @@ Installation
 You can add or exclude some locations in that file.
 For a reference please see: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
 
-
-Usage
------
+## Usage
 
 * To run checks only:
 

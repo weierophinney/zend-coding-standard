@@ -1,0 +1,77 @@
+sudo: false
+
+language: php
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - vendor
+
+env:
+  global:
+    - COMPOSER_ARGS="--no-interaction"
+    - COVERAGE_DEPS="satooshi/php-coveralls"
+    - LEGACY_DEPS="phpunit/phpunit"
+
+matrix:
+  include:
+    - php: 5.6
+      env:
+        - DEPS=lowest
+    - php: 5.6
+      env:
+        - DEPS=locked
+    - php: 5.6
+      env:
+        - DEPS=latest
+    - php: 7
+      env:
+        - DEPS=lowest
+    - php: 7
+      env:
+        - DEPS=locked
+    - php: 7
+      env:
+        - DEPS=latest
+    - php: 7.1
+      env:
+        - DEPS=lowest
+    - php: 7.1
+      env:
+        - DEPS=locked
+    - php: 7.1
+      env:
+        - DEPS=latest
+        #- TEST_COVERAGE=true
+
+before_install:
+  - if [[ $TEST_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
+  - travis_retry composer self-update
+
+install:
+  - travis_retry composer install $COMPOSER_ARGS --ignore-platform-reqs
+  - if [[ $TRAVIS_PHP_VERSION =~ ^5.6 ]]; then travis_retry composer update $COMPOSER_ARGS --with-dependencies $LEGACY_DEPS ; fi
+  - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
+  - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
+  - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer require --dev $COMPOSER_ARGS $COVERAGE_DEPS ; fi
+  - composer show
+
+script:
+  - if [[ $TEST_COVERAGE == 'true' ]]; then composer test-coverage ; else composer test ; fi
+  - composer cs-check
+
+after_script:
+  - if [[ $TEST_COVERAGE == 'true' ]]; then composer upload-coverage ; fi
+
+notifications:
+  email: false
+  irc:
+    channels:
+      - "irc.freenode.org#zftalk.dev"
+    on_success: change
+    on_failure: always
+  slack:
+    rooms:
+      - secure: "fh+J7c7A9f7Sje2h9M00mw9UyeKQ2l1FyGvOwQ50CPHvf0u7bb1OV3sEqTukiwSNEQNmJ5C3QuJpaxkIeDjI8LJpeNderWeu6NH2O5OedSEElHmc7RsBygfiHM05hWnv10ddDxJ+YtmuNjpkXIoXcBdHby+eRBJ09YStVhnIwQakBbKBH7Idlitn23QYl4VZeA3jTcGsHhCtGjpjDt4sohs/RJWgGfAYTSKcjSLdFWWdg2G8PRPKTyQkR+nFd92lvVeRteg0VzxGJqKXoeJP3B0WYB7emQJho+ly4DZFkL+wJZPtcEHCi/ne9l/OaVy6XGhbiDVXxxpyexD4cmGySdjpsYirXqxjS6V8kfWn3JVbCxipI518zJq5Rb3JOCVcdoo7P/xXqYj+fihMbGfxBorUqwm8uBlCblRGXJ1QcVRsi52u0zMJN+QQ/gYHf0gBoF9IbYvQDeshZT80TnYUy2/om/j9xTUfZMdEKTRQWrj9LbsNKY619gZt2u/b2tbcWdjFiPA/Uxa2VjphHz8LFuHaU43/km4swLhthkPowdZLozuyJjksbJcjH7izh3Hxd8oRxBFrqdfuPgh3owQyW75wvG/TGWnNXMqO66OuXXaJKAomBnVBjGB6DBo3TnPzEyKUkLi54AVQIfaDPqQH8yec5ugogOYrrQDLIT1kdVY="
+    on_success: change
+    on_failure: always

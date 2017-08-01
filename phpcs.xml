@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<ruleset name="Zend Framework Coding Standard">
+    <!-- Load ruleset -->
+    <rule ref="./src/ZendCodingStandard/ruleset.xml"/>
+
+    <arg value="ps"/>
+
+    <!-- Check copyright and license files -->
+    <file>./COPYRIGHT.md</file>
+    <file>./LICENSE.md</file>
+    <!-- Paths to check -->
+    <file>./src</file>
+    <file>./test</file>
+
+    <!-- Exclude test assets -->
+    <exclude-pattern>*/TestAsset/*</exclude-pattern>
+</ruleset>
